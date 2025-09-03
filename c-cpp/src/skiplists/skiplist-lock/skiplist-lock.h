@@ -39,9 +39,9 @@
 
 /*
  * number of unique blk sizes we want to deal with
- * (1 for node and 1 for next pointer array)
+ * (25 for nodes with varying heights)
  */
-#define MAX_SIZES 2
+#define MAX_SIZES 25
 
 #define DEFAULT_DURATION                10000
 #define DEFAULT_INITIAL                 256
@@ -91,10 +91,10 @@ typedef pthread_spinlock_t ptlock_t;
 typedef struct sl_node {
 	val_t val; 
 	int toplevel;
-	struct sl_node** next;
 	volatile int marked;
 	volatile int fullylinked;
 	ptlock_t lock;	
+	struct sl_node* next[1];
 } sl_node_t;
 
 typedef struct sl_intset {
