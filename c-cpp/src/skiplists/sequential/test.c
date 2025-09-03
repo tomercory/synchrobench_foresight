@@ -22,6 +22,7 @@
  */
 
 #include "intset.h"
+#include "common.h"
 
 volatile AO_t stop;
 unsigned int global_seed;
@@ -124,6 +125,7 @@ typedef struct thread_data {
 	sl_intset_t *set;
 	barrier_t *barrier;
 	unsigned long failures_because_contention;
+	CACHE_PAD(0); // avoid false sharing with other threads
 } thread_data_t;
 
 

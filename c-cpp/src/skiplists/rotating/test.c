@@ -178,6 +178,7 @@ typedef struct thread_data {
 	set_t *set;
 	barrier_t *barrier;
 	unsigned long failures_because_contention;
+	CACHE_PAD(0); // avoid false sharing with other threads
 } thread_data_t;
 
 
