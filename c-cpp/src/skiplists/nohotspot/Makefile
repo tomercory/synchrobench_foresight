@@ -4,6 +4,8 @@ include $(ROOT)/common/Makefile.common
 
 BINS = $(BINDIR)/lockfree-nohotspot-skiplist
 
+LDFLAGS += -lpfm  # Link libpfm
+
 .PHONY:	all clean
 
 all:	main
