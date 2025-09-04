@@ -426,7 +426,6 @@ void *test2(void *data)
 		
     return NULL;
   }
-}
 	
   int main(int argc, char **argv)
   {

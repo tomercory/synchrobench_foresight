@@ -414,7 +414,7 @@ int main(int argc, char **argv)
 	unsigned int val = 0;
 	unsigned long reads, effreads, updates, effupds, aborts, aborts_locked_read, aborts_locked_write,
 	aborts_validate_read, aborts_validate_write, aborts_validate_commit,
-	aborts_invalid_memory, aborts_double_write, max_retries, failures_because_contention.
+	aborts_invalid_memory, aborts_double_write, max_retries, failures_because_contention,
 	L1_cache_accesses, L1_cache_misses, L3_cache_accesses, L3_cache_misses;
 	thread_data_t *data;
 	pthread_t *threads;
