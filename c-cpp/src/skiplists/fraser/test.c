@@ -750,7 +750,7 @@ int main(int argc, char **argv)
 		if (max_retries < data[i].max_retries)
 			max_retries = data[i].max_retries;
 	}
-	printf("Set size      : %lu (expected: %lu)\n", set_count(set), size);
+	// printf("Set size      : %lu (expected: %lu)\n", set_count(set), size);
 	printf("Duration      : %d (ms)\n", duration);
 	printf("#txs          : %lu (%f / s)\n", reads + updates, (reads + updates) * 1000.0 / duration);
 
@@ -788,7 +788,7 @@ int main(int argc, char **argv)
 	}
 
         /*set_print(set);*/
-        set_print_nodenums(set);
+        //set_print_nodenums(set);
         _destroy_gc_subsystem();
 
 	// Cleanup STM

@@ -655,23 +655,23 @@ int main(int argc, char **argv)
     L3_cache_accesses = 0;
 
 	for (i = 0; i < nb_threads; i++) {
-		printf("Thread %d\n", i);
-		printf("  #add        : %lu\n", data[i].nb_add);
-		printf("    #added    : %lu\n", data[i].nb_added);
-		printf("  #remove     : %lu\n", data[i].nb_remove);
-		printf("    #removed  : %lu\n", data[i].nb_removed);
-		printf("  #contains   : %lu\n", data[i].nb_contains);
-		printf("  #found      : %lu\n", data[i].nb_found);
-		printf("  #aborts     : %lu\n", data[i].nb_aborts);
-		printf("    #lock-r   : %lu\n", data[i].nb_aborts_locked_read);
-		printf("    #lock-w   : %lu\n", data[i].nb_aborts_locked_write);
-		printf("    #val-r    : %lu\n", data[i].nb_aborts_validate_read);
-		printf("    #val-w    : %lu\n", data[i].nb_aborts_validate_write);
-		printf("    #val-c    : %lu\n", data[i].nb_aborts_validate_commit);
-		printf("    #inv-mem  : %lu\n", data[i].nb_aborts_invalid_memory);
-		printf("    #dup-w    : %lu\n", data[i].nb_aborts_double_write);
-		printf("    #failures : %lu\n", data[i].failures_because_contention);
-		printf("  Max retries : %lu\n", data[i].max_retries);
+		// printf("Thread %d\n", i);
+		// printf("  #add        : %lu\n", data[i].nb_add);
+		// printf("    #added    : %lu\n", data[i].nb_added);
+		// printf("  #remove     : %lu\n", data[i].nb_remove);
+		// printf("    #removed  : %lu\n", data[i].nb_removed);
+		// printf("  #contains   : %lu\n", data[i].nb_contains);
+		// printf("  #found      : %lu\n", data[i].nb_found);
+		// printf("  #aborts     : %lu\n", data[i].nb_aborts);
+		// printf("    #lock-r   : %lu\n", data[i].nb_aborts_locked_read);
+		// printf("    #lock-w   : %lu\n", data[i].nb_aborts_locked_write);
+		// printf("    #val-r    : %lu\n", data[i].nb_aborts_validate_read);
+		// printf("    #val-w    : %lu\n", data[i].nb_aborts_validate_write);
+		// printf("    #val-c    : %lu\n", data[i].nb_aborts_validate_commit);
+		// printf("    #inv-mem  : %lu\n", data[i].nb_aborts_invalid_memory);
+		// printf("    #dup-w    : %lu\n", data[i].nb_aborts_double_write);
+		// printf("    #failures : %lu\n", data[i].failures_because_contention);
+		// printf("  Max retries : %lu\n", data[i].max_retries);
 		// printf("#L1 cache misses    : %lu\n", data[i].L1_cache_misses);
 		// printf("#L1 cache accesses  : %lu\n", data[i].L1_cache_accesses);
 		// printf("#L3 cache misses    : %lu\n", data[i].L3_cache_misses);
@@ -699,7 +699,7 @@ int main(int argc, char **argv)
 		if (max_retries < data[i].max_retries)
 			max_retries = data[i].max_retries;
 	}
-	printf("Set size      : %lu (expected: %lu)\n", sl_set_size(set), size);
+	// printf("Set size      : %lu (expected: %lu)\n", sl_set_size(set), size);
 	printf("Duration      : %d (ms)\n", duration);
 	printf("#txs          : %lu (%f / s)\n", reads + updates, (reads + updates) * 1000.0 / duration);
 	

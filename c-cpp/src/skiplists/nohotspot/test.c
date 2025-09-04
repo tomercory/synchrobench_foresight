@@ -789,7 +789,7 @@ int main(int argc, char **argv)
 			max_retries = data[i].max_retries;
 	}
 
-	printf("Set size      : %d (expected: %d)\n", set_size(set,1), size);
+	// printf("Set size      : %d (expected: %d)\n", set_size(set,1), size);
 	printf("Duration      : %d (ms)\n", duration);
 	printf("#txs          : %lu (%f / s)\n", reads + updates, (reads + updates) * 1000.0 / duration);
 	
