@@ -69,9 +69,9 @@ sl_node_t *sl_new_simple_node(val_t val, int toplevel, int transactional)
   sl_node_t *node;
 
   if (transactional)
-    node = (sl_node_t *)MALLOC(sizeof(sl_node_t) + toplevel * sizeof(sl_node_t *));
+    node = (sl_node_t *)MALLOC(sizeof(sl_node_t) + (toplevel-1) * sizeof(sl_node_t *));
   else 
-    node = (sl_node_t *)malloc(sizeof(sl_node_t) + toplevel * sizeof(sl_node_t *));
+    node = (sl_node_t *)malloc(sizeof(sl_node_t) + (toplevel-1) * sizeof(sl_node_t *));
   if (node == NULL) {
     perror("malloc");
     exit(1);
