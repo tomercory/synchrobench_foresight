@@ -25,7 +25,10 @@
  */
 
 #include "skiplist.h"
+// The code below is relevant only for non-sequential skiplists variants, currently unsupported by Foresight
 
+/*
 int fraser_find(sl_intset_t *set, val_t val);
 int fraser_remove(sl_intset_t *set, val_t val);
 int fraser_insert(sl_intset_t *set, val_t v);
+*/

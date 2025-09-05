@@ -46,7 +46,8 @@ int sl_contains(sl_intset_t *set, val_t val, int transactional)
 	result = (node->val == val);
 		
 #elif defined STM
-	
+// The code below is relevant only for non-sequential skiplists variants, currently unsupported by Foresight
+	/*
 	int i;
 	sl_node_t *node, *next;
 	val_t v = VAL_MIN;
@@ -82,7 +83,7 @@ int sl_contains(sl_intset_t *set, val_t val, int transactional)
 	  TX_END;
 
 	}
-	
+	*/
 #endif
 	
 	return result;
@@ -130,7 +131,8 @@ int sl_add(sl_intset_t *set, val_t val, int transactional)
 	result = sl_seq_add(set, val);
 		
 #elif defined STM
-	
+ // The code below is relevant only for non-sequential skiplists variants, currently unsupported by Foresight
+	/*
 	int i, l;
 	sl_node_t *node, *next;
 	sl_node_t *preds[MAXLEVEL];
@@ -183,7 +185,7 @@ int sl_add(sl_intset_t *set, val_t val, int transactional)
 	  TX_END;
 	
 	}
-	
+	*/
 #endif
 		
   }
@@ -219,7 +221,8 @@ int sl_remove(sl_intset_t *set, val_t val, int transactional)
 	}
 
 #elif defined STM
-	
+// The code below is relevant only for non-sequential skiplists variants, currently unsupported by Foresight
+	/*
 	int i;
 	sl_node_t *node, *next = NULL;
 	sl_node_t *preds[MAXLEVEL], *succs[MAXLEVEL];
@@ -274,7 +277,7 @@ int sl_remove(sl_intset_t *set, val_t val, int transactional)
 	  TX_END;
 
 	}
-	
+	*/
 #endif
 	
 	return result;
