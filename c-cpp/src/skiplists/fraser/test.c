@@ -598,8 +598,8 @@ int main(int argc, char **argv)
 		}
 	}
         printf("i = %d\n", i);
-	size = set_count(set);
-	printf("Set size     : %lu\n", size);
+	// size = set_count(set);
+	// printf("Set size     : %lu\n", size);
 	printf("Level max    : %d\n", levelmax);
 
 	// Access set from all threads

@@ -550,8 +550,8 @@ int main(int argc, char **argv)
 			i++;
 		}
 	}
-	size = sl_set_size(set);
-	printf("Set size     : %lu\n", size);
+	// size = sl_set_size(set);
+	// printf("Set size     : %lu\n", size);
 	printf("Level max    : %d\n", levelmax);
 	
 	// Access set from all threads 

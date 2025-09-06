@@ -610,8 +610,8 @@ int main(int argc, char **argv)
 			i++;
 		}
 	}
-	size = set_size(set, 1);
-	printf("Set size     : %d\n", size);
+	// size = set_size(set, 1);
+	// printf("Set size     : %d\n", size);
 	printf("Level max    : %d\n", levelmax);
 
         // nullify all the index nodes we created so

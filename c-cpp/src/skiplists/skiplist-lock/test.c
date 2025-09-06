@@ -645,8 +645,8 @@ void *test2(void *data)
 	i++;
       }
     }
-    size = sl_set_size(set);
-    printf("Set size     : %d\n", size);
+    // size = sl_set_size(set);
+    // printf("Set size     : %d\n", size);
     printf("Level max    : %d\n", levelmax);
 		
     /* Access set from all threads */
