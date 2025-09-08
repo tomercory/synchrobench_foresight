@@ -6,7 +6,7 @@ FTVS_sizes="128 512 2048 8192 32768 131072 524288 2097152 8388608 33554432"
 FSVT_sizes="512 131072 33554432"
 FSVT_threads="1 2 8 16 32" # 4, 64, 128 threads already run as part of FTVS
 
-iterations="1 2 3 4 5 6 7 8 9 10"
+iterations="1 2 3 4 5"
 
 # Make sure that the benchmarks run up-to-date code
 cd ..
@@ -33,53 +33,53 @@ cd scripts
     # repeat for multiple iterations
     for j in ${iterations}; do
       # Print a header with current parameters
-      date +"%H:%M:%S" > -a "$output_file1"
-      echo "Running with parameters: -t 1 -i $i (Run $j of 10)" > "$output_file1"
-      echo "----------------------------------------" > "$output_file1"
+      date +"%H:%M:%S" >> "$output_file1"
+      echo "Running with parameters: -t 1 -i $i (Run $j of 5)" >> "$output_file1"
+      echo "----------------------------------------" >> "$output_file1"
       # Run (readonly, no cache monitoring)
-      ./../bin/sequential-skiplist -t 1 -i "$i" -r "$(($i * 2))" -u 0 -f 0 -m 0 > "$output_file1"
+      ./../bin/sequential-skiplist -t 1 -i "$i" -r "$(($i * 2))" -u 0 -f 0 -m 0 >> "$output_file1"
       # Print a blank line after each command output
-      echo "" > "$output_file1"
+      echo "" >> "$output_file1"
 
-      date +"%H:%M:%S" > -a "$output_file2"
-      echo "Running with parameters: -t 1 -i $i (Run $j of 10)" > "$output_file2"
-      echo "----------------------------------------" > "$output_file2"
+      date +"%H:%M:%S" >> "$output_file2"
+      echo "Running with parameters: -t 1 -i $i (Run $j of 5)" >> "$output_file2"
+      echo "----------------------------------------" >> "$output_file2"
       # Run (5% update, no cache monitoring)
-      ./../bin/sequential-skiplist -t 1 -i "$i" -r "$(($i * 2))" -u 5 -f 0 -m 0 > "$output_file2"
+      ./../bin/sequential-skiplist -t 1 -i "$i" -r "$(($i * 2))" -u 5 -f 0 -m 0 >> "$output_file2"
       # Print a blank line after each command output
-      echo "" > "$output_file2"
+      echo "" >> "$output_file2"
 
-      date +"%H:%M:%S" > -a "$output_file3"
-      echo "Running with parameters: -t 1 -i $i (Run $j of 10)" > "$output_file3"
-      echo "----------------------------------------" > "$output_file3"
+      date +"%H:%M:%S" >> "$output_file3"
+      echo "Running with parameters: -t 1 -i $i (Run $j of 5)" >> "$output_file3"
+      echo "----------------------------------------" >> "$output_file3"
       # Run (50% update, no cache monitoring)
-      ./../bin/sequential-skiplist -t 1 -i "$i" -r "$(($i * 2))" -u 50 -f 0 -m 0 > "$output_file3"
+      ./../bin/sequential-skiplist -t 1 -i "$i" -r "$(($i * 2))" -u 50 -f 0 -m 0 >> "$output_file3"
       # Print a blank line after each command output
-      echo "" > "$output_file3"
+      echo "" >> "$output_file3"
 
-      date +"%H:%M:%S" > -a "$output_file4"
-      echo "Running with parameters: -t 1 -i $i (Run $j of 10)" > "$output_file4"
-      echo "----------------------------------------" > "$output_file4"
+      date +"%H:%M:%S" >> "$output_file4"
+      echo "Running with parameters: -t 1 -i $i (Run $j of 5)" >> "$output_file4"
+      echo "----------------------------------------" >> "$output_file4"
       # Run (readonly, cache monitoring)
-      ./../bin/sequential-skiplist -t 1 -i "$i" -r "$(($i * 2))" -u 0 -f 0 -m 1 > "$output_file4"
+      ./../bin/sequential-skiplist -t 1 -i "$i" -r "$(($i * 2))" -u 0 -f 0 -m 1 >> "$output_file4"
       # Print a blank line after each command output
-      echo "" > "$output_file4"
+      echo "" >> "$output_file4"
 
-      date +"%H:%M:%S" > -a "$output_file5"
-      echo "Running with parameters: -t 1 -i $i (Run $j of 10)" > "$output_file5"
-      echo "----------------------------------------" > "$output_file5"
+      date +"%H:%M:%S" >> "$output_file5"
+      echo "Running with parameters: -t 1 -i $i (Run $j of 5)" >> "$output_file5"
+      echo "----------------------------------------" >> "$output_file5"
       # Run (5% update, cache monitoring)
-      ./../bin/sequential-skiplist -t 1 -i "$i" -r "$(($i * 2))" -u 5 -f 0 -m 1 > "$output_file5"
+      ./../bin/sequential-skiplist -t 1 -i "$i" -r "$(($i * 2))" -u 5 -f 0 -m 1 >> "$output_file5"
       # Print a blank line after each command output
-      echo "" > "$output_file5"
+      echo "" >> "$output_file5"
 
-      date +"%H:%M:%S" > -a "$output_file6"
-      echo "Running with parameters: -t 1 -i $i (Run $j of 10)" > "$output_file6"
-      echo "----------------------------------------" > "$output_file6"
+      date +"%H:%M:%S" >> "$output_file6"
+      echo "Running with parameters: -t 1 -i $i (Run $j of 5)" >> "$output_file6"
+      echo "----------------------------------------" >> "$output_file6"
       # Run (50% update, cache monitoring)
-      ./../bin/sequential-skiplist -t 1 -i "$i" -r "$(($i * 2))" -u 50 -f 0 -m 1 > "$output_file6"
+      ./../bin/sequential-skiplist -t 1 -i "$i" -r "$(($i * 2))" -u 50 -f 0 -m 1 >> "$output_file6"
       # Print a blank line after each command output
-      echo "" > "$output_file6"
+      echo "" >> "$output_file6"
     done
   done
   echo "Sequential base case finished successfuly!" | mail -s "Skiplist Experiment Update" tomer.cory@campus.technion.ac.il
@@ -105,53 +105,53 @@ cd scripts
     # repeat for multiple iterations
     for j in ${iterations}; do
       # Print a header with current parameters
-      date +"%H:%M:%S" > -a "$output_file1"
-      echo "Running with parameters: -t $t -i $i (Run $j of 10)" > "$output_file1"
-      echo "----------------------------------------" > "$output_file1"
+      date +"%H:%M:%S" >> "$output_file1"
+      echo "Running with parameters: -t $t -i $i (Run $j of 5)" >> "$output_file1"
+      echo "----------------------------------------" >> "$output_file1"
       # Run (readonly, no cache monitoring)
-      ./../bin/SPIN-skiplist -t "$t" -i "$i" -r "$(($i * 2))" -u 0 -f 0 -m 0 > "$output_file1"
+      ./../bin/SPIN-skiplist -t "$t" -i "$i" -r "$(($i * 2))" -u 0 -f 0 -m 0 >> "$output_file1"
       # Print a blank line after each command output
-      echo "" > "$output_file1"
+      echo "" >> "$output_file1"
 
-      date +"%H:%M:%S" > -a "$output_file2"
-      echo "Running with parameters: -t $t -i $i (Run $j of 10)" > "$output_file2"
-      echo "----------------------------------------" > "$output_file2"
+      date +"%H:%M:%S" >> "$output_file2"
+      echo "Running with parameters: -t $t -i $i (Run $j of 5)" >> "$output_file2"
+      echo "----------------------------------------" >> "$output_file2"
       # Run (5% update, no cache monitoring)
-      ./../bin/SPIN-skiplist -t "$t" -i "$i" -r "$(($i * 2))" -u 5 -f 0 -m 0 > "$output_file2"
+      ./../bin/SPIN-skiplist -t "$t" -i "$i" -r "$(($i * 2))" -u 5 -f 0 -m 0 >> "$output_file2"
       # Print a blank line after each command output
-      echo "" > "$output_file2"
+      echo "" >> "$output_file2"
 
-      date +"%H:%M:%S" > -a "$output_file3"
-      echo "Running with parameters: -t $t -i $i (Run $j of 10)" > "$output_file3"
-      echo "----------------------------------------" > "$output_file3"
+      date +"%H:%M:%S" >> "$output_file3"
+      echo "Running with parameters: -t $t -i $i (Run $j of 5)" >> "$output_file3"
+      echo "----------------------------------------" >> "$output_file3"
       # Run (50% update, no cache monitoring)
-      ./../bin/SPIN-skiplist -t "$t" -i "$i" -r "$(($i * 2))" -u 50 -f 0 -m 0 > "$output_file3"
+      ./../bin/SPIN-skiplist -t "$t" -i "$i" -r "$(($i * 2))" -u 50 -f 0 -m 0 >> "$output_file3"
       # Print a blank line after each command output
-      echo "" > "$output_file3"
+      echo "" >> "$output_file3"
 
-      date +"%H:%M:%S" > -a "$output_file4"
-      echo "Running with parameters: -t $t -i $i (Run $j of 10)" > "$output_file4"
-      echo "----------------------------------------" > "$output_file4"
+      date +"%H:%M:%S" >> "$output_file4"
+      echo "Running with parameters: -t $t -i $i (Run $j of 5)" >> "$output_file4"
+      echo "----------------------------------------" >> "$output_file4"
       # Run (readonly, cache monitoring)
-      ./../bin/SPIN-skiplist -t "$t" -i "$i" -r "$(($i * 2))" -u 0 -f 0 -m 1 > "$output_file4"
+      ./../bin/SPIN-skiplist -t "$t" -i "$i" -r "$(($i * 2))" -u 0 -f 0 -m 1 >> "$output_file4"
       # Print a blank line after each command output
-      echo "" > "$output_file4"
+      echo "" >> "$output_file4"
 
-      date +"%H:%M:%S" > -a "$output_file5"
-      echo "Running with parameters: -t $t -i $i (Run $j of 10)" > "$output_file5"
-      echo "----------------------------------------" > "$output_file5"
+      date +"%H:%M:%S" >> "$output_file5"
+      echo "Running with parameters: -t $t -i $i (Run $j of 5)" >> "$output_file5"
+      echo "----------------------------------------" >> "$output_file5"
       # Run (5% update, cache monitoring)
-      ./../bin/SPIN-skiplist -t "$t" -i "$i" -r "$(($i * 2))" -u 5 -f 0 -m 1 > "$output_file5"
+      ./../bin/SPIN-skiplist -t "$t" -i "$i" -r "$(($i * 2))" -u 5 -f 0 -m 1 >> "$output_file5"
       # Print a blank line after each command output
-      echo "" > "$output_file5"
+      echo "" >> "$output_file5"
 
-      date +"%H:%M:%S" > -a "$output_file6"
-      echo "Running with parameters: -t $t -i $i (Run $j of 10)" > "$output_file6"
-      echo "----------------------------------------" > "$output_file6"
+      date +"%H:%M:%S" >> "$output_file6"
+      echo "Running with parameters: -t $t -i $i (Run $j of 5)" >> "$output_file6"
+      echo "----------------------------------------" >> "$output_file6"
       # Run (50% update, cache monitoring)
-      ./../bin/SPIN-skiplist -t "$t" -i "$i" -r "$(($i * 2))" -u 50 -f 0 -m 1 > "$output_file6"
+      ./../bin/SPIN-skiplist -t "$t" -i "$i" -r "$(($i * 2))" -u 50 -f 0 -m 1 >> "$output_file6"
       # Print a blank line after each command output
-      echo "" > "$output_file6"
+      echo "" >> "$output_file6"
     done
   done
   done
@@ -162,53 +162,53 @@ cd scripts
     # repeat for multiple iterations
     for j in ${iterations}; do
       # Print a header with current parameters
-      date +"%H:%M:%S" > -a "$output_file1"
-      echo "Running with parameters: -t $t -i $i (Run $j of 10)" > "$output_file1"
-      echo "----------------------------------------" > "$output_file1"
+      date +"%H:%M:%S" >> "$output_file1"
+      echo "Running with parameters: -t $t -i $i (Run $j of 5)" >> "$output_file1"
+      echo "----------------------------------------" >> "$output_file1"
       # Run (readonly, no cache monitoring)
-      ./../bin/SPIN-skiplist -t "$t" -i "$i" -r "$(($i * 2))" -u 0 -f 0 -m 0 > "$output_file1"
+      ./../bin/SPIN-skiplist -t "$t" -i "$i" -r "$(($i * 2))" -u 0 -f 0 -m 0 >> "$output_file1"
       # Print a blank line after each command output
-      echo "" > "$output_file1"
+      echo "" >> "$output_file1"
 
-      date +"%H:%M:%S" > -a "$output_file2"
-      echo "Running with parameters: -t $t -i $i (Run $j of 10)" > "$output_file2"
-      echo "----------------------------------------" > "$output_file2"
+      date +"%H:%M:%S" >> "$output_file2"
+      echo "Running with parameters: -t $t -i $i (Run $j of 5)" >> "$output_file2"
+      echo "----------------------------------------" >> "$output_file2"
       # Run (5% update, no cache monitoring)
-      ./../bin/SPIN-skiplist -t "$t" -i "$i" -r "$(($i * 2))" -u 5 -f 0 -m 0 > "$output_file2"
+      ./../bin/SPIN-skiplist -t "$t" -i "$i" -r "$(($i * 2))" -u 5 -f 0 -m 0 >> "$output_file2"
       # Print a blank line after each command output
-      echo "" > "$output_file2"
+      echo "" >> "$output_file2"
 
-      date +"%H:%M:%S" > -a "$output_file3"
-      echo "Running with parameters: -t $t -i $i (Run $j of 10)" > "$output_file3"
-      echo "----------------------------------------" > "$output_file3"
+      date +"%H:%M:%S" >> "$output_file3"
+      echo "Running with parameters: -t $t -i $i (Run $j of 5)" >> "$output_file3"
+      echo "----------------------------------------" >> "$output_file3"
       # Run (50% update, no cache monitoring)
-      ./../bin/SPIN-skiplist -t "$t" -i "$i" -r "$(($i * 2))" -u 50 -f 0 -m 0 > "$output_file3"
+      ./../bin/SPIN-skiplist -t "$t" -i "$i" -r "$(($i * 2))" -u 50 -f 0 -m 0 >> "$output_file3"
       # Print a blank line after each command output
-      echo "" > "$output_file3"
+      echo "" >> "$output_file3"
 
-      date +"%H:%M:%S" > -a "$output_file4"
-      echo "Running with parameters: -t $t -i $i (Run $j of 10)" > "$output_file4"
-      echo "----------------------------------------" > "$output_file4"
+      date +"%H:%M:%S" >> "$output_file4"
+      echo "Running with parameters: -t $t -i $i (Run $j of 5)" >> "$output_file4"
+      echo "----------------------------------------" >> "$output_file4"
       # Run (readonly, cache monitoring)
-      ./../bin/SPIN-skiplist -t "$t" -i "$i" -r "$(($i * 2))" -u 0 -f 0 -m 1 > "$output_file4"
+      ./../bin/SPIN-skiplist -t "$t" -i "$i" -r "$(($i * 2))" -u 0 -f 0 -m 1 >> "$output_file4"
       # Print a blank line after each command output
-      echo "" > "$output_file4"
+      echo "" >> "$output_file4"
 
-      date +"%H:%M:%S" > -a "$output_file5"
-      echo "Running with parameters: -t $t -i $i (Run $j of 10)" > "$output_file5"
-      echo "----------------------------------------" > "$output_file5"
+      date +"%H:%M:%S" >> "$output_file5"
+      echo "Running with parameters: -t $t -i $i (Run $j of 5)" >> "$output_file5"
+      echo "----------------------------------------" >> "$output_file5"
       # Run (5% update, cache monitoring)
-      ./../bin/SPIN-skiplist -t "$t" -i "$i" -r "$(($i * 2))" -u 5 -f 0 -m 1 > "$output_file5"
+      ./../bin/SPIN-skiplist -t "$t" -i "$i" -r "$(($i * 2))" -u 5 -f 0 -m 1 >> "$output_file5"
       # Print a blank line after each command output
-      echo "" > "$output_file5"
+      echo "" >> "$output_file5"
 
-      date +"%H:%M:%S" > -a "$output_file6"
-      echo "Running with parameters: -t $t -i $i (Run $j of 10)" > "$output_file6"
-      echo "----------------------------------------" > "$output_file6"
+      date +"%H:%M:%S" >> "$output_file6"
+      echo "Running with parameters: -t $t -i $i (Run $j of 5)" >> "$output_file6"
+      echo "----------------------------------------" >> "$output_file6"
       # Run (50% update, cache monitoring)
-      ./../bin/SPIN-skiplist -t "$t" -i "$i" -r "$(($i * 2))" -u 50 -f 0 -m 1 > "$output_file6"
+      ./../bin/SPIN-skiplist -t "$t" -i "$i" -r "$(($i * 2))" -u 50 -f 0 -m 1 >> "$output_file6"
       # Print a blank line after each command output
-      echo "" > "$output_file6"
+      echo "" >> "$output_file6"
     done
   done
   done
@@ -235,53 +235,53 @@ cd scripts
     # repeat for multiple iterations
     for j in ${iterations}; do
       # Print a header with current parameters
-      date +"%H:%M:%S" > -a "$output_file1"
-      echo "Running with parameters: -t $t -i $i (Run $j of 10)" > "$output_file1"
-      echo "----------------------------------------" > "$output_file1"
+      date +"%H:%M:%S" >> "$output_file1"
+      echo "Running with parameters: -t $t -i $i (Run $j of 5)" >> "$output_file1"
+      echo "----------------------------------------" >> "$output_file1"
       # Run (readonly, no cache monitoring)
-      ./../bin/lockfree-fraser-skiplist -t "$t" -i "$i" -r "$(($i * 2))" -u 0 -f 0 -m 0 > "$output_file1"
+      ./../bin/lockfree-fraser-skiplist -t "$t" -i "$i" -r "$(($i * 2))" -u 0 -f 0 -m 0 >> "$output_file1"
       # Print a blank line after each command output
-      echo "" > "$output_file1"
+      echo "" >> "$output_file1"
 
-      date +"%H:%M:%S" > -a "$output_file2"
-      echo "Running with parameters: -t $t -i $i (Run $j of 10)" > "$output_file2"
-      echo "----------------------------------------" > "$output_file2"
+      date +"%H:%M:%S" >> "$output_file2"
+      echo "Running with parameters: -t $t -i $i (Run $j of 5)" >> "$output_file2"
+      echo "----------------------------------------" >> "$output_file2"
       # Run (5% update, no cache monitoring)
-      ./../bin/lockfree-fraser-skiplist -t "$t" -i "$i" -r "$(($i * 2))" -u 5 -f 0 -m 0 > "$output_file2"
+      ./../bin/lockfree-fraser-skiplist -t "$t" -i "$i" -r "$(($i * 2))" -u 5 -f 0 -m 0 >> "$output_file2"
       # Print a blank line after each command output
-      echo "" > "$output_file2"
+      echo "" >> "$output_file2"
 
-      date +"%H:%M:%S" > -a "$output_file3"
-      echo "Running with parameters: -t $t -i $i (Run $j of 10)" > "$output_file3"
-      echo "----------------------------------------" > "$output_file3"
+      date +"%H:%M:%S" >> "$output_file3"
+      echo "Running with parameters: -t $t -i $i (Run $j of 5)" >> "$output_file3"
+      echo "----------------------------------------" >> "$output_file3"
       # Run (50% update, no cache monitoring)
-      ./../bin/lockfree-fraser-skiplist -t "$t" -i "$i" -r "$(($i * 2))" -u 50 -f 0 -m 0 > "$output_file3"
+      ./../bin/lockfree-fraser-skiplist -t "$t" -i "$i" -r "$(($i * 2))" -u 50 -f 0 -m 0 >> "$output_file3"
       # Print a blank line after each command output
-      echo "" > "$output_file3"
+      echo "" >> "$output_file3"
 
-      date +"%H:%M:%S" > -a "$output_file4"
-      echo "Running with parameters: -t $t -i $i (Run $j of 10)" > "$output_file4"
-      echo "----------------------------------------" > "$output_file4"
+      date +"%H:%M:%S" >> "$output_file4"
+      echo "Running with parameters: -t $t -i $i (Run $j of 5)" >> "$output_file4"
+      echo "----------------------------------------" >> "$output_file4"
       # Run (readonly, cache monitoring)
-      ./../bin/lockfree-fraser-skiplist -t "$t" -i "$i" -r "$(($i * 2))" -u 0 -f 0 -m 1 > "$output_file4"
+      ./../bin/lockfree-fraser-skiplist -t "$t" -i "$i" -r "$(($i * 2))" -u 0 -f 0 -m 1 >> "$output_file4"
       # Print a blank line after each command output
-      echo "" > "$output_file4"
+      echo "" >> "$output_file4"
 
-      date +"%H:%M:%S" > -a "$output_file5"
-      echo "Running with parameters: -t $t -i $i (Run $j of 10)" > "$output_file5"
-      echo "----------------------------------------" > "$output_file5"
+      date +"%H:%M:%S" >> "$output_file5"
+      echo "Running with parameters: -t $t -i $i (Run $j of 5)" >> "$output_file5"
+      echo "----------------------------------------" >> "$output_file5"
       # Run (5% update, cache monitoring)
-      ./../bin/lockfree-fraser-skiplist -t "$t" -i "$i" -r "$(($i * 2))" -u 5 -f 0 -m 1 > "$output_file5"
+      ./../bin/lockfree-fraser-skiplist -t "$t" -i "$i" -r "$(($i * 2))" -u 5 -f 0 -m 1 >> "$output_file5"
       # Print a blank line after each command output
-      echo "" > "$output_file5"
+      echo "" >> "$output_file5"
 
-      date +"%H:%M:%S" > -a "$output_file6"
-      echo "Running with parameters: -t $t -i $i (Run $j of 10)" > "$output_file6"
-      echo "----------------------------------------" > "$output_file6"
+      date +"%H:%M:%S" >> "$output_file6"
+      echo "Running with parameters: -t $t -i $i (Run $j of 5)" >> "$output_file6"
+      echo "----------------------------------------" >> "$output_file6"
       # Run (50% update, cache monitoring)
-      ./../bin/lockfree-fraser-skiplist -t "$t" -i "$i" -r "$(($i * 2))" -u 50 -f 0 -m 1 > "$output_file6"
+      ./../bin/lockfree-fraser-skiplist -t "$t" -i "$i" -r "$(($i * 2))" -u 50 -f 0 -m 1 >> "$output_file6"
       # Print a blank line after each command output
-      echo "" > "$output_file6"
+      echo "" >> "$output_file6"
     done
   done
   done
@@ -292,53 +292,53 @@ cd scripts
     # repeat for multiple iterations
     for j in ${iterations}; do
       # Print a header with current parameters
-      date +"%H:%M:%S" > -a "$output_file1"
-      echo "Running with parameters: -t $t -i $i (Run $j of 10)" > "$output_file1"
-      echo "----------------------------------------" > "$output_file1"
+      date +"%H:%M:%S" >> "$output_file1"
+      echo "Running with parameters: -t $t -i $i (Run $j of 5)" >> "$output_file1"
+      echo "----------------------------------------" >> "$output_file1"
       # Run (readonly, no cache monitoring)
-      ./../bin/lockfree-fraser-skiplist -t "$t" -i "$i" -r "$(($i * 2))" -u 0 -f 0 -m 0 > "$output_file1"
+      ./../bin/lockfree-fraser-skiplist -t "$t" -i "$i" -r "$(($i * 2))" -u 0 -f 0 -m 0 >> "$output_file1"
       # Print a blank line after each command output
-      echo "" > "$output_file1"
+      echo "" >> "$output_file1"
 
-      date +"%H:%M:%S" > -a "$output_file2"
-      echo "Running with parameters: -t $t -i $i (Run $j of 10)" > "$output_file2"
-      echo "----------------------------------------" > "$output_file2"
+      date +"%H:%M:%S" >> "$output_file2"
+      echo "Running with parameters: -t $t -i $i (Run $j of 5)" >> "$output_file2"
+      echo "----------------------------------------" >> "$output_file2"
       # Run (5% update, no cache monitoring)
-      ./../bin/lockfree-fraser-skiplist -t "$t" -i "$i" -r "$(($i * 2))" -u 5 -f 0 -m 0 > "$output_file2"
+      ./../bin/lockfree-fraser-skiplist -t "$t" -i "$i" -r "$(($i * 2))" -u 5 -f 0 -m 0 >> "$output_file2"
       # Print a blank line after each command output
-      echo "" > "$output_file2"
+      echo "" >> "$output_file2"
 
-      date +"%H:%M:%S" > -a "$output_file3"
-      echo "Running with parameters: -t $t -i $i (Run $j of 10)" > "$output_file3"
-      echo "----------------------------------------" > "$output_file3"
+      date +"%H:%M:%S" >> "$output_file3"
+      echo "Running with parameters: -t $t -i $i (Run $j of 5)" >> "$output_file3"
+      echo "----------------------------------------" >> "$output_file3"
       # Run (50% update, no cache monitoring)
-      ./../bin/lockfree-fraser-skiplist -t "$t" -i "$i" -r "$(($i * 2))" -u 50 -f 0 -m 0 > "$output_file3"
+      ./../bin/lockfree-fraser-skiplist -t "$t" -i "$i" -r "$(($i * 2))" -u 50 -f 0 -m 0 >> "$output_file3"
       # Print a blank line after each command output
-      echo "" > "$output_file3"
+      echo "" >> "$output_file3"
 
-      date +"%H:%M:%S" > -a "$output_file4"
-      echo "Running with parameters: -t $t -i $i (Run $j of 10)" > "$output_file4"
-      echo "----------------------------------------" > "$output_file4"
+      date +"%H:%M:%S" >> "$output_file4"
+      echo "Running with parameters: -t $t -i $i (Run $j of 5)" >> "$output_file4"
+      echo "----------------------------------------" >> "$output_file4"
       # Run (readonly, cache monitoring)
-      ./../bin/lockfree-fraser-skiplist -t "$t" -i "$i" -r "$(($i * 2))" -u 0 -f 0 -m 1 > "$output_file4"
+      ./../bin/lockfree-fraser-skiplist -t "$t" -i "$i" -r "$(($i * 2))" -u 0 -f 0 -m 1 >> "$output_file4"
       # Print a blank line after each command output
-      echo "" > "$output_file4"
+      echo "" >> "$output_file4"
 
-      date +"%H:%M:%S" > -a "$output_file5"
-      echo "Running with parameters: -t $t -i $i (Run $j of 10)" > "$output_file5"
-      echo "----------------------------------------" > "$output_file5"
+      date +"%H:%M:%S" >> "$output_file5"
+      echo "Running with parameters: -t $t -i $i (Run $j of 5)" >> "$output_file5"
+      echo "----------------------------------------" >> "$output_file5"
       # Run (5% update, cache monitoring)
-      ./../bin/lockfree-fraser-skiplist -t "$t" -i "$i" -r "$(($i * 2))" -u 5 -f 0 -m 1 > "$output_file5"
+      ./../bin/lockfree-fraser-skiplist -t "$t" -i "$i" -r "$(($i * 2))" -u 5 -f 0 -m 1 >> "$output_file5"
       # Print a blank line after each command output
-      echo "" > "$output_file5"
+      echo "" >> "$output_file5"
 
-      date +"%H:%M:%S" > -a "$output_file6"
-      echo "Running with parameters: -t $t -i $i (Run $j of 10)" > "$output_file6"
-      echo "----------------------------------------" > "$output_file6"
+      date +"%H:%M:%S" >> "$output_file6"
+      echo "Running with parameters: -t $t -i $i (Run $j of 5)" >> "$output_file6"
+      echo "----------------------------------------" >> "$output_file6"
       # Run (50% update, cache monitoring)
-      ./../bin/lockfree-fraser-skiplist -t "$t" -i "$i" -r "$(($i * 2))" -u 50 -f 0 -m 1 > "$output_file6"
+      ./../bin/lockfree-fraser-skiplist -t "$t" -i "$i" -r "$(($i * 2))" -u 50 -f 0 -m 1 >> "$output_file6"
       # Print a blank line after each command output
-      echo "" > "$output_file6"
+      echo "" >> "$output_file6"
     done
   done
   done
@@ -365,53 +365,53 @@ cd scripts
     # repeat for multiple iterations
     for j in ${iterations}; do
       # Print a header with current parameters
-      date +"%H:%M:%S" > -a "$output_file1"
-      echo "Running with parameters: -t $t -i $i (Run $j of 10)" > "$output_file1"
-      echo "----------------------------------------" > "$output_file1"
+      date +"%H:%M:%S" >> "$output_file1"
+      echo "Running with parameters: -t $t -i $i (Run $j of 5)" >> "$output_file1"
+      echo "----------------------------------------" >> "$output_file1"
       # Run (readonly, no cache monitoring)
-      ./../bin/lockfree-nohotspot-skiplist -t "$t" -i "$i" -r "$(($i * 2))" -u 0 -f 0 -m 0 > "$output_file1"
+      ./../bin/lockfree-nohotspot-skiplist -t "$t" -i "$i" -r "$(($i * 2))" -u 0 -f 0 -m 0 >> "$output_file1"
       # Print a blank line after each command output
-      echo "" > "$output_file1"
+      echo "" >> "$output_file1"
 
-      date +"%H:%M:%S" > -a "$output_file2"
-      echo "Running with parameters: -t $t -i $i (Run $j of 10)" > "$output_file2"
-      echo "----------------------------------------" > "$output_file2"
+      date +"%H:%M:%S" >> "$output_file2"
+      echo "Running with parameters: -t $t -i $i (Run $j of 5)" >> "$output_file2"
+      echo "----------------------------------------" >> "$output_file2"
       # Run (5% update, no cache monitoring)
-      ./../bin/lockfree-nohotspot-skiplist -t "$t" -i "$i" -r "$(($i * 2))" -u 5 -f 0 -m 0 > "$output_file2"
+      ./../bin/lockfree-nohotspot-skiplist -t "$t" -i "$i" -r "$(($i * 2))" -u 5 -f 0 -m 0 >> "$output_file2"
       # Print a blank line after each command output
-      echo "" > "$output_file2"
+      echo "" >> "$output_file2"
 
-      date +"%H:%M:%S" > -a "$output_file3"
-      echo "Running with parameters: -t $t -i $i (Run $j of 10)" > "$output_file3"
-      echo "----------------------------------------" > "$output_file3"
+      date +"%H:%M:%S" >> "$output_file3"
+      echo "Running with parameters: -t $t -i $i (Run $j of 5)" >> "$output_file3"
+      echo "----------------------------------------" >> "$output_file3"
       # Run (50% update, no cache monitoring)
-      ./../bin/lockfree-nohotspot-skiplist -t "$t" -i "$i" -r "$(($i * 2))" -u 50 -f 0 -m 0 > "$output_file3"
+      ./../bin/lockfree-nohotspot-skiplist -t "$t" -i "$i" -r "$(($i * 2))" -u 50 -f 0 -m 0 >> "$output_file3"
       # Print a blank line after each command output
-      echo "" > "$output_file3"
+      echo "" >> "$output_file3"
 
-      date +"%H:%M:%S" > -a "$output_file4"
-      echo "Running with parameters: -t $t -i $i (Run $j of 10)" > "$output_file4"
-      echo "----------------------------------------" > "$output_file4"
+      date +"%H:%M:%S" >> "$output_file4"
+      echo "Running with parameters: -t $t -i $i (Run $j of 5)" >> "$output_file4"
+      echo "----------------------------------------" >> "$output_file4"
       # Run (readonly, cache monitoring)
-      ./../bin/lockfree-nohotspot-skiplist -t "$t" -i "$i" -r "$(($i * 2))" -u 0 -f 0 -m 1 > "$output_file4"
+      ./../bin/lockfree-nohotspot-skiplist -t "$t" -i "$i" -r "$(($i * 2))" -u 0 -f 0 -m 1 >> "$output_file4"
       # Print a blank line after each command output
-      echo "" > "$output_file4"
+      echo "" >> "$output_file4"
 
-      date +"%H:%M:%S" > -a "$output_file5"
-      echo "Running with parameters: -t $t -i $i (Run $j of 10)" > "$output_file5"
-      echo "----------------------------------------" > "$output_file5"
+      date +"%H:%M:%S" >> "$output_file5"
+      echo "Running with parameters: -t $t -i $i (Run $j of 5)" >> "$output_file5"
+      echo "----------------------------------------" >> "$output_file5"
       # Run (5% update, cache monitoring)
-      ./../bin/lockfree-nohotspot-skiplist -t "$t" -i "$i" -r "$(($i * 2))" -u 5 -f 0 -m 1 > "$output_file5"
+      ./../bin/lockfree-nohotspot-skiplist -t "$t" -i "$i" -r "$(($i * 2))" -u 5 -f 0 -m 1 >> "$output_file5"
       # Print a blank line after each command output
-      echo "" > "$output_file5"
+      echo "" >> "$output_file5"
 
-      date +"%H:%M:%S" > -a "$output_file6"
-      echo "Running with parameters: -t $t -i $i (Run $j of 10)" > "$output_file6"
-      echo "----------------------------------------" > "$output_file6"
+      date +"%H:%M:%S" >> "$output_file6"
+      echo "Running with parameters: -t $t -i $i (Run $j of 5)" >> "$output_file6"
+      echo "----------------------------------------" >> "$output_file6"
       # Run (50% update, cache monitoring)
-      ./../bin/lockfree-nohotspot-skiplist -t "$t" -i "$i" -r "$(($i * 2))" -u 50 -f 0 -m 1 > "$output_file6"
+      ./../bin/lockfree-nohotspot-skiplist -t "$t" -i "$i" -r "$(($i * 2))" -u 50 -f 0 -m 1 >> "$output_file6"
       # Print a blank line after each command output
-      echo "" > "$output_file6"
+      echo "" >> "$output_file6"
     done
   done
   done
@@ -422,53 +422,53 @@ cd scripts
     # repeat for multiple iterations
     for j in ${iterations}; do
       # Print a header with current parameters
-      date +"%H:%M:%S" > -a "$output_file1"
-      echo "Running with parameters: -t $t -i $i (Run $j of 10)" > "$output_file1"
-      echo "----------------------------------------" > "$output_file1"
+      date +"%H:%M:%S" >> "$output_file1"
+      echo "Running with parameters: -t $t -i $i (Run $j of 5)" >> "$output_file1"
+      echo "----------------------------------------" >> "$output_file1"
       # Run (readonly, no cache monitoring)
-      ./../bin/lockfree-nohotspot-skiplist -t "$t" -i "$i" -r "$(($i * 2))" -u 0 -f 0 -m 0 > "$output_file1"
+      ./../bin/lockfree-nohotspot-skiplist -t "$t" -i "$i" -r "$(($i * 2))" -u 0 -f 0 -m 0 >> "$output_file1"
       # Print a blank line after each command output
-      echo "" > "$output_file1"
+      echo "" >> "$output_file1"
 
-      date +"%H:%M:%S" > -a "$output_file2"
-      echo "Running with parameters: -t $t -i $i (Run $j of 10)" > "$output_file2"
-      echo "----------------------------------------" > "$output_file2"
+      date +"%H:%M:%S" >> "$output_file2"
+      echo "Running with parameters: -t $t -i $i (Run $j of 5)" >> "$output_file2"
+      echo "----------------------------------------" >> "$output_file2"
       # Run (5% update, no cache monitoring)
-      ./../bin/lockfree-nohotspot-skiplist -t "$t" -i "$i" -r "$(($i * 2))" -u 5 -f 0 -m 0 > "$output_file2"
+      ./../bin/lockfree-nohotspot-skiplist -t "$t" -i "$i" -r "$(($i * 2))" -u 5 -f 0 -m 0 >> "$output_file2"
       # Print a blank line after each command output
-      echo "" > "$output_file2"
+      echo "" >> "$output_file2"
 
-      date +"%H:%M:%S" > -a "$output_file3"
-      echo "Running with parameters: -t $t -i $i (Run $j of 10)" > "$output_file3"
-      echo "----------------------------------------" > "$output_file3"
+      date +"%H:%M:%S" >> "$output_file3"
+      echo "Running with parameters: -t $t -i $i (Run $j of 5)" >> "$output_file3"
+      echo "----------------------------------------" >> "$output_file3"
       # Run (50% update, no cache monitoring)
-      ./../bin/lockfree-nohotspot-skiplist -t "$t" -i "$i" -r "$(($i * 2))" -u 50 -f 0 -m 0 > "$output_file3"
+      ./../bin/lockfree-nohotspot-skiplist -t "$t" -i "$i" -r "$(($i * 2))" -u 50 -f 0 -m 0 >> "$output_file3"
       # Print a blank line after each command output
-      echo "" > "$output_file3"
+      echo "" >> "$output_file3"
 
-      date +"%H:%M:%S" > -a "$output_file4"
-      echo "Running with parameters: -t $t -i $i (Run $j of 10)" > "$output_file4"
-      echo "----------------------------------------" > "$output_file4"
+      date +"%H:%M:%S" >> "$output_file4"
+      echo "Running with parameters: -t $t -i $i (Run $j of 5)" >> "$output_file4"
+      echo "----------------------------------------" >> "$output_file4"
       # Run (readonly, cache monitoring)
-      ./../bin/lockfree-nohotspot-skiplist -t "$t" -i "$i" -r "$(($i * 2))" -u 0 -f 0 -m 1 > "$output_file4"
+      ./../bin/lockfree-nohotspot-skiplist -t "$t" -i "$i" -r "$(($i * 2))" -u 0 -f 0 -m 1 >> "$output_file4"
       # Print a blank line after each command output
-      echo "" > "$output_file4"
+      echo "" >> "$output_file4"
 
-      date +"%H:%M:%S" > -a "$output_file5"
-      echo "Running with parameters: -t $t -i $i (Run $j of 10)" > "$output_file5"
-      echo "----------------------------------------" > "$output_file5"
+      date +"%H:%M:%S" >> "$output_file5"
+      echo "Running with parameters: -t $t -i $i (Run $j of 5)" >> "$output_file5"
+      echo "----------------------------------------" >> "$output_file5"
       # Run (5% update, cache monitoring)
-      ./../bin/lockfree-nohotspot-skiplist -t "$t" -i "$i" -r "$(($i * 2))" -u 5 -f 0 -m 1 > "$output_file5"
+      ./../bin/lockfree-nohotspot-skiplist -t "$t" -i "$i" -r "$(($i * 2))" -u 5 -f 0 -m 1 >> "$output_file5"
       # Print a blank line after each command output
-      echo "" > "$output_file5"
+      echo "" >> "$output_file5"
 
-      date +"%H:%M:%S" > -a "$output_file6"
-      echo "Running with parameters: -t $t -i $i (Run $j of 10)" > "$output_file6"
-      echo "----------------------------------------" > "$output_file6"
+      date +"%H:%M:%S" >> "$output_file6"
+      echo "Running with parameters: -t $t -i $i (Run $j of 5)" >> "$output_file6"
+      echo "----------------------------------------" >> "$output_file6"
       # Run (50% update, cache monitoring)
-      ./../bin/lockfree-nohotspot-skiplist -t "$t" -i "$i" -r "$(($i * 2))" -u 50 -f 0 -m 1 > "$output_file6"
+      ./../bin/lockfree-nohotspot-skiplist -t "$t" -i "$i" -r "$(($i * 2))" -u 50 -f 0 -m 1 >> "$output_file6"
       # Print a blank line after each command output
-      echo "" > "$output_file6"
+      echo "" >> "$output_file6"
     done
   done
   done
