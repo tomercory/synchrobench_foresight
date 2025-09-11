@@ -81,7 +81,7 @@ node_t* node_new(sl_key_t key, val_t val, node_t *prev, node_t *next,
  * @node: the node pointer for the new inode
  * @ptst: per-thread state
  */
-inode_t* inode_new(inode_t *right, inode_t *down, node_t *node, ptst_t *ptst)
+inode_t* inode_new(next_foresight_t right, inode_t *down, node_t *node, ptst_t *ptst)
 {
         inode_t *inode;
 
@@ -139,7 +139,7 @@ set_t* set_new(int start)
         set->head->marker = 0;
 
         set->top = malloc(sizeof(inode_t));
-        set->top->right = NULL;
+        set->top->right = (next_foresight_t){.right_p = NULL, .right_k= MAX_KEY};
         set->top->down  = NULL;
         set->top->node  = set->head;
 
@@ -185,7 +185,7 @@ void set_print(set_t *set, int flag)
         while (NULL != ihead) {
                 while (NULL != itemp) {
                         printf("%lu ", itemp->node->key);
-                        itemp = itemp->right;
+                        itemp = itemp->right.right_p;
                 }
                 printf("\n");
                 ihead = ihead->down;

@@ -18,9 +18,16 @@
 #define NUM_LEVELS 2
 #define NODE_LEVEL 0
 #define INODE_LEVEL 1
+#define MAX_KEY (~0UL)
 
 typedef unsigned long sl_key_t;
 typedef void* val_t;
+
+typedef struct sl_next_foresight next_foresight_t;
+struct sl_next_foresight {
+    struct sl_inode *right_p;
+    sl_key_t right_k;
+};
 
 /* bottom-level nodes */
 typedef VOLATILE struct sl_node node_t;
@@ -36,7 +43,7 @@ struct sl_node {
 /* index-level nodes */
 typedef VOLATILE struct sl_inode inode_t;
 struct sl_inode {
-        struct sl_inode *right;
+        struct sl_next_foresight right;
         struct sl_inode *down;
         struct sl_node  *node;
 };
@@ -52,7 +59,7 @@ struct sl_set {
 node_t* node_new(sl_key_t key, val_t val, node_t *prev, node_t *next,
                  unsigned int level, ptst_t *ptst);
 
-inode_t* inode_new(inode_t *right, inode_t *down, node_t *node, ptst_t *ptst);
+inode_t* inode_new(next_foresight_t right, inode_t *down, node_t *node, ptst_t *ptst);
 
 void node_delete(node_t *node, ptst_t *ptst);
 void inode_delete(inode_t *inode, ptst_t *ptst);

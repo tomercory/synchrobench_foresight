@@ -117,6 +117,7 @@ static void* bg_loop(void *args)
         inode_t *inodes[MAX_LEVELS];
         int raised = 0; /* keep track of if we raised index level */
         int threshold;  /* for testing if we should lower index level */
+        next_foresight_t new_top_right = {NULL, MAX_KEY};
         int i;
         struct sl_ptst *ptst;
 
@@ -161,7 +162,7 @@ static void* bg_loop(void *args)
 
                 if (raised && (1 == set->head->level)) {
                         /* add a new index level */
-                        inew = inode_new(NULL, set->top, set->head, ptst);
+                        inew = inode_new(new_top_right, set->top, set->head, ptst);
                         set->top = inew;
                         ++set->head->level;
                         assert(NULL == inodes[1]);
@@ -182,8 +183,8 @@ static void* bg_loop(void *args)
                 }
 
                 if (raised) {
-                        /* add a new index level */
-                        inew = inode_new(NULL, set->top, set->head, ptst);
+                        /* add a new index level */  
+                        inew = inode_new(new_top_right, set->top, set->head, ptst);
                         set->top = inew;
                         ++set->head->level;
 
@@ -276,16 +277,17 @@ static int bg_raise_nlevel(inode_t *inode, ptst_t *ptst)
 
                                 /* get the correct index above and behind */
                                 while (above && above->node->key < node->key) {
-                                        above = above->right;
-                                        if (above != inode->right)
-                                                above_prev = above_prev->right;
+                                        above = above->right.right_p;
+                                        if (above != inode->right.right_p)
+                                                above_prev = above_prev->right.right_p;
                                 }
 
 
                                 /* add a new index item above node */
                                 inew = inode_new(above_prev->right, NULL,
                                                  node, ptst);
-                                above_prev->right = inew;
+                                above_prev->right.right_p = inew;
+                                above_prev->right.right_k = inew->node->key;
                                 node->level = 1;
                                 above_prev = inode = above = inew;
                         }
@@ -318,17 +320,18 @@ static int bg_raise_ilevel(inode_t *iprev, inode_t *iprev_tall,
         assert(NULL != iprev);
         assert(NULL != iprev_tall);
 
-        index = iprev->right;
+        index = iprev->right.right_p;
 
-        while ((NULL != index) && (NULL != (inext = index->right))) {
+        while ((NULL != index) && (NULL != (inext = index->right.right_p))) {
                 while (index->node->val == index->node) {
                         /* skip deleted nodes */
-                        iprev->right = inext;
+                        iprev->right.right_k = index->right.right_k; 
+                        iprev->right.right_p = inext;
                         if (NULL == inext)
                                 break;
 
                         index = inext;
-                        inext = inext->right;
+                        inext = inext->right.right_p;
                 }
                 if (NULL == inext)
                         break;
@@ -340,14 +343,15 @@ static int bg_raise_ilevel(inode_t *iprev, inode_t *iprev_tall,
 
                         /* get the correct index above and behind */
                         while (above && above->node->key < index->node->key) {
-                                above = above->right;
-                                if (above != iprev_tall->right)
-                                        above_prev = above_prev->right;
+                                above = above->right.right_p;
+                                if (above != iprev_tall->right.right_p)
+                                        above_prev = above_prev->right.right_p;
                         }
 
                         inew = inode_new(above_prev->right, index,
                                          index->node, ptst);
-                        above_prev->right = inew;
+                        above_prev->right.right_p = inew; 
+                        above_prev->right.right_k = inew->node->key;
                         index->node->level = height + 1;
                         above_prev = above = iprev_tall = inew;
                 }
@@ -374,13 +378,13 @@ void bg_lower_ilevel(inode_t *new_low, ptst_t *ptst)
         while (NULL != new_low) {
                 new_low->down = NULL;
                 --new_low->node->level;
-                new_low = new_low->right;
+                new_low = new_low->right.right_p;
         }
 
         /* garbage collect the old low level */
         while (NULL != old_low) {
                 inode_delete(old_low, ptst);
-                old_low = old_low->right;
+                old_low = old_low->right.right_p;
         }
 }
 
