@@ -15,6 +15,7 @@ else
 endif
 
 CFLAGS      += -D$(ARCH) -Wno-unused-value -Wno-format #-fomit-frame-pointer
+CFLAGS      += -I$(ROOT)/src/atomic_ops
 LDFLAGS += -lpfm  # Link libpfm
 
 #CFLAGS      += $(DEBUGGING)
