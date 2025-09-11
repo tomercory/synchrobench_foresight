@@ -15,12 +15,12 @@ cd scripts
 
 ### Sequential ###
   # Define the output files and clear them if they already exists
-  output_file1="../results/results_sequential_base_update_0p.txt"
-  output_file2="../results/results_sequential_base_update_5p.txt"
-  output_file3="../results/results_sequential_base_update_50p.txt"
-  output_file4="../results/results-cache_sequential_base_update_0p.txt"
-  output_file5="../results/results-cache_sequential_base_update_5p.txt"
-  output_file6="../results/results-cache_sequential_base_update_50p.txt"
+  output_file1="../results/results_sequential_foresight_update_0p.txt"
+  output_file2="../results/results_sequential_foresight_update_5p.txt"
+  output_file3="../results/results_sequential_foresight_update_50p.txt"
+  output_file4="../results/results-cache_sequential_foresight_update_0p.txt"
+  output_file5="../results/results-cache_sequential_foresight_update_5p.txt"
+  output_file6="../results/results-cache_sequential_foresight_update_50p.txt"
   > "$output_file1"
   > "$output_file2"
   > "$output_file3"
@@ -82,16 +82,16 @@ cd scripts
       echo "" >> "$output_file6"
     done
   done
-  echo "Sequential base case finished successfuly!" | mail -s "Skiplist Experiment Update" tomer.cory@campus.technion.ac.il
+  echo "Sequential foresight case finished successfuly!" | mail -s "Skiplist Experiment Update" tomer.cory@campus.technion.ac.il
 
 ### Optimistic ###
   # Define the output files and clear them if they already exists
-  output_file1="../results/results_optimistic_base_update_0p.txt"
-  output_file2="../results/results_optimistic_base_update_5p.txt"
-  output_file3="../results/results_optimistic_base_update_50p.txt"
-  output_file4="../results/results-cache_optimistic_base_update_0p.txt"
-  output_file5="../results/results-cache_optimistic_base_update_5p.txt"
-  output_file6="../results/results-cache_optimistic_base_update_50p.txt"
+  output_file1="../results/results_optimistic_foresight_update_0p.txt"
+  output_file2="../results/results_optimistic_foresight_update_5p.txt"
+  output_file3="../results/results_optimistic_foresight_update_50p.txt"
+  output_file4="../results/results-cache_optimistic_foresight_update_0p.txt"
+  output_file5="../results/results-cache_optimistic_foresight_update_5p.txt"
+  output_file6="../results/results-cache_optimistic_foresight_update_50p.txt"
   > "$output_file1"
   > "$output_file2"
   > "$output_file3"
@@ -212,16 +212,16 @@ cd scripts
     done
   done
   done
-  echo "Optimistic base case finished successfuly!" | mail -s "Skiplist Experiment Update" tomer.cory@campus.technion.ac.il
+  echo "Optimistic foresight case finished successfuly!" | mail -s "Skiplist Experiment Update" tomer.cory@campus.technion.ac.il
 
 ### Fraser ###
 # Define the output files and clear them if they already exists
-  output_file1="../results/results_fraser_base_update_0p.txt"
-  output_file2="../results/results_fraser_base_update_5p.txt"
-  output_file3="../results/results_fraser_base_update_50p.txt"
-  output_file4="../results/results-cache_fraser_base_update_0p.txt"
-  output_file5="../results/results-cache_fraser_base_update_5p.txt"
-  output_file6="../results/results-cache_fraser_base_update_50p.txt"
+  output_file1="../results/results_fraser_foresight_update_0p.txt"
+  output_file2="../results/results_fraser_foresight_update_5p.txt"
+  output_file3="../results/results_fraser_foresight_update_50p.txt"
+  output_file4="../results/results-cache_fraser_foresight_update_0p.txt"
+  output_file5="../results/results-cache_fraser_foresight_update_5p.txt"
+  output_file6="../results/results-cache_fraser_foresight_update_50p.txt"
   > "$output_file1"
   > "$output_file2"
   > "$output_file3"
@@ -342,16 +342,16 @@ cd scripts
     done
   done
   done
-  echo "Fraser base case finished successfuly!" | mail -s "Skiplist Experiment Update" tomer.cory@campus.technion.ac.il
+  echo "Fraser foresight case finished successfuly!" | mail -s "Skiplist Experiment Update" tomer.cory@campus.technion.ac.il
 
 ### NHS ###
 # Define the output files and clear them if they already exists
-  output_file1="../results/results_nohotspot_base_update_0p.txt"
-  output_file2="../results/results_nohotspot_base_update_5p.txt"
-  output_file3="../results/results_nohotspot_base_update_50p.txt"
-  output_file4="../results/results-cache_nohotspot_base_update_0p.txt"
-  output_file5="../results/results-cache_nohotspot_base_update_5p.txt"
-  output_file6="../results/results-cache_nohotspot_base_update_50p.txt"
+  output_file1="../results/results_nohotspot_foresight_update_0p.txt"
+  output_file2="../results/results_nohotspot_foresight_update_5p.txt"
+  output_file3="../results/results_nohotspot_foresight_update_50p.txt"
+  output_file4="../results/results-cache_nohotspot_foresight_update_0p.txt"
+  output_file5="../results/results-cache_nohotspot_foresight_update_5p.txt"
+  output_file6="../results/results-cache_nohotspot_foresight_update_50p.txt"
   > "$output_file1"
   > "$output_file2"
   > "$output_file3"
@@ -472,4 +472,4 @@ cd scripts
     done
   done
   done
-  echo "NHS base case finished successfuly! (base experiment is over)" | mail -s "Skiplist Experiment Update" tomer.cory@campus.technion.ac.il
+  echo "NHS foresight case finished successfuly! (foresight experiment is over)" | mail -s "Skiplist Experiment Update" tomer.cory@campus.technion.ac.il
