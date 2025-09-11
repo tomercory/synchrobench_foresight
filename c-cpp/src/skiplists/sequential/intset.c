@@ -32,18 +32,15 @@ int sl_contains(sl_intset_t *set, val_t val, int transactional)
 #ifdef SEQUENTIAL /* Unprotected */
 	
 	int i;
-	sl_node_t *node, *next;
+	sl_node_t *node;
 	
 	node = set->head;
 	for (i = node->toplevel-1; i >= 0; i--) {
-		next = node->next[i];
-		while (next->val < val) {
-			node = next;
-			next = node->next[i];
+		while (node->next[i].next_key < val) {
+			node = node->next[i].next_ptr;
 		}
 	}
-	node = node->next[0];
-	result = (node->val == val);
+	result = (node->next[0].next_key == val);
 		
 #elif defined STM
 // The code below is relevant only for non-sequential skiplists variants, currently unsupported by Foresight
@@ -91,26 +88,24 @@ int sl_contains(sl_intset_t *set, val_t val, int transactional)
 
 inline int sl_seq_add(sl_intset_t *set, val_t val) {
 	int i, l, result;
-	sl_node_t *node, *next;
+	sl_node_t *node;
 	sl_node_t *preds[MAXLEVEL], *succs[MAXLEVEL];
 	
 	node = set->head;
 	for (i = node->toplevel-1; i >= 0; i--) {
-		next = node->next[i];
-		while (next->val < val) {
-			node = next;
-			next = node->next[i];
+		while (node->next[i].next_key < val) {
+			node = node->next[i].next_ptr;
 		}
 		preds[i] = node;
-		succs[i] = node->next[i];
+		succs[i] = node->next[i].next_ptr;
 	}
-	node = node->next[0];
+	node = node->next[0].next_ptr;
 	if ((result = (node->val != val)) == 1) {
 		l = get_rand_level();
 		node = sl_new_simple_node(val, l, 0);
 		for (i = 0; i < l; i++) {
-			node->next[i] = succs[i];
-			preds[i]->next[i] = node;
+			node->next[i] = preds[i]->next[i];
+			preds[i]->next[i] = (sl_next_foresight_t){ .next_ptr = node, .next_key = val };
 		}
 	}
 	return result;
@@ -200,24 +195,23 @@ int sl_remove(sl_intset_t *set, val_t val, int transactional)
 #ifdef SEQUENTIAL
 	
 	int i;
-	sl_node_t *node, *next = NULL;
+	sl_node_t *node;
 	sl_node_t *preds[MAXLEVEL], *succs[MAXLEVEL];
 	
 	node = set->head;
 	for (i = node->toplevel-1; i >= 0; i--) {
-		next = node->next[i];
-		while (next->val < val) {
-			node = next;
-			next = node->next[i];
+		while (node->next[i].next_key < val) {
+			node = node->next[i].next_ptr;
 		}
 		preds[i] = node;
-		succs[i] = node->next[i];
+		succs[i] = node->next[i].next_ptr;
 	}
-	if ((result = (next->val == val)) == 1) {
+	node = node->next[0].next_ptr;
+	if ((result = (node->val == val)) == 1) {
 		for (i = 0; i < set->head->toplevel; i++) 
 			if (succs[i]->val == val)
 				preds[i]->next[i] = succs[i]->next[i];
-		sl_delete_node(next); 
+		sl_delete_node(node); 
 	}
 
 #elif defined STM

@@ -184,7 +184,7 @@ void print_skiplist(sl_intset_t *set) {
 		}
 		arr[curr->toplevel-1]++;
 		printf("\n");
-		curr = curr->next[0];
+		curr = curr->next[0].next_ptr;
 	} while (curr); 
 	for (j=0; j<levelmax; j++)
 		printf("%d nodes of level %d\n", arr[j], j);
