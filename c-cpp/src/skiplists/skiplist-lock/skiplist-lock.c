@@ -99,8 +99,10 @@ sl_node_t *sl_new_node(val_t val, sl_node_t *next, int toplevel, int transaction
 	
 	node = sl_new_simple_node(val, toplevel, transactional, ptst);
 	
-	for (i = 0; i < toplevel; i++)
-		node->next[i] = next;
+	next_foresight_t next_entry = { .next_ptr = next, .next_key = (next != NULL ? next->val : VAL_MAX) };
+	for (i = 0; i < toplevel-1; i++)
+		node->next[i] = next_entry;
+	node->next[toplevel-1].next_ptr = next;
 	
 	return node;
 }
@@ -131,7 +133,7 @@ void sl_set_delete(sl_intset_t *set, ptst_t *ptst)
 	
 	node = set->head;
 	while (node != NULL) {
-		next = node->next[0];
+		next = node->next[0].next_ptr;
 		sl_delete_node(node, ptst);
 		node = next;
 	}
@@ -144,11 +146,11 @@ int sl_set_size(sl_intset_t *set)
 	sl_node_t *node;
 	
 	/* We have at least 2 elements */
-	node = set->head->next[0];
-	while (node->next[0] != NULL) {
+	node = set->head->next[0].next_ptr;
+	while (node->next[0].next_ptr != NULL) {
 		if (node->fullylinked && !node->marked)
 			size++;
-		node = node->next[0];
+		node = node->next[0].next_ptr;
 	}
 	
 	return size;
@@ -161,6 +163,8 @@ void set_subsystem_init(void)
 {
     int i;
 	for (i = 0; i < MAX_SIZES ; i++) {
-		gc_id[i] = gc_add_allocator(sizeof(sl_node_t)+ i*sizeof(sl_node_t *));
+		// we do not use foresight for lvl 0 - can save space by not keeping next_key for that level
+		// for lvl x != 0 the next_key relevant for that level is stored at next[x-1].next_key
+		gc_id[i] = gc_add_allocator(sizeof(sl_node_t)+ i*sizeof(next_foresight_t) - sizeof(val_t)); 
 	}
 }

@@ -78,13 +78,18 @@ typedef pthread_spinlock_t ptlock_t;
 #  define UNLOCK(lock)			pthread_spin_unlock(lock)
 #endif
 
+typedef struct sl_next_foresight {
+	struct sl_node* next_ptr;  // Pointer to the next node at this level
+	val_t next_key;        // Value of the next node at this level
+} next_foresight_t;
+
 typedef struct sl_node {
 	val_t val; 
 	int toplevel;
 	volatile int marked;
 	volatile int fullylinked;
 	ptlock_t lock;	
-	struct sl_node* next[1];
+	next_foresight_t next[1];
 } sl_node_t;
 
 typedef struct sl_intset {
