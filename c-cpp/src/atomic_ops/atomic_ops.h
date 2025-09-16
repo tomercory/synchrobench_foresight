@@ -345,4 +345,9 @@
 #define AO_T AO_t
 #define AO_TS_VAL AO_TS_VAL_t
 
+/* allow 128-bit-wide atomic reads and writes 
+ * only works on x86, only guaranteed to be atomic on Intel
+ */
+#include "./SIMD_atomics.h"
+
 #endif /* ATOMIC_OPS_H */
