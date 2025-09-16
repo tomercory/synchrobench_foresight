@@ -27,7 +27,7 @@ typedef struct sl_next_foresight next_foresight_t;
 struct sl_next_foresight {
     struct sl_inode *right_p;
     sl_key_t right_k;
-};
+} __attribute__((aligned(16))); // must be aligned to support 128-bit loads/stores
 
 /* bottom-level nodes */
 typedef VOLATILE struct sl_node node_t;

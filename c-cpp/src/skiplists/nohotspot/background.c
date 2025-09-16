@@ -286,8 +286,7 @@ static int bg_raise_nlevel(inode_t *inode, ptst_t *ptst)
                                 /* add a new index item above node */
                                 inew = inode_new(above_prev->right, NULL,
                                                  node, ptst);
-                                above_prev->right.right_p = inew;
-                                above_prev->right.right_k = inew->node->key;
+                                write_16_bytes_atomic((uint64_t) inew, (uint64_t) inew->node->key, &(above_prev->right));
                                 node->level = 1;
                                 above_prev = inode = above = inew;
                         }
@@ -325,8 +324,7 @@ static int bg_raise_ilevel(inode_t *iprev, inode_t *iprev_tall,
         while ((NULL != index) && (NULL != (inext = index->right.right_p))) {
                 while (index->node->val == index->node) {
                         /* skip deleted nodes */
-                        iprev->right.right_k = index->right.right_k; 
-                        iprev->right.right_p = inext;
+                        write_16_bytes_atomic((uint64_t) inext, (uint64_t)  index->right.right_k, &(iprev->right));
                         if (NULL == inext)
                                 break;
 
@@ -350,8 +348,7 @@ static int bg_raise_ilevel(inode_t *iprev, inode_t *iprev_tall,
 
                         inew = inode_new(above_prev->right, index,
                                          index->node, ptst);
-                        above_prev->right.right_p = inew; 
-                        above_prev->right.right_k = inew->node->key;
+                        write_16_bytes_atomic((uint64_t)inew, (uint64_t)inew->node->key, &(above_prev->right));
                         index->node->level = height + 1;
                         above_prev = above = iprev_tall = inew;
                 }

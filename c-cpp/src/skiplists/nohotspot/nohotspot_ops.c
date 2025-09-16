@@ -214,32 +214,18 @@ int sl_do_operation(set_t *set, sl_optype_t optype, sl_key_t key, val_t val)
         /* find an entry-point to the node-level */
         item = set->top;
         while (1) {
-            next_item = item->right.right_p;
-            next_key = item->right.right_k;
+            read_16_bytes_atomic(&(item->right), (uint64_t *)&next_item, (uint64_t *)&next_key);
             if (NULL == next_item || next_key > key) {
                 next_item = item->down;
                 if (NULL == next_item) {
                     node = item->node;
                     break;
                 }
-                item = next_item;
-                continue;
             } else if (next_key == key) {
-                if(next_item->node->key == key){
-                    node = item->node;
-                    break;
-                }
+                node = item->node;
+                break;
             }
-
-            if (next_item->node->key > key) { // validate that going right is indeed legal, go down if not
-                if (item->down != NULL) {
-                    item = item->down;
-                } else {
-                    node = item->node;
-                    break;
-                }
-            } else
-                item = next_item;
+            item = next_item;
         }
 
         /* find the correct node and next */
