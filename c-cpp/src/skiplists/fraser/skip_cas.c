@@ -64,10 +64,10 @@ typedef struct node_st node_t;
 typedef struct set_st set_t;
 typedef VOLATILE node_t *sh_node_pt;
 
-typedef struct next_foresight_st {
+typedef struct __attribute__((aligned(16))) next_foresight_st {
     sh_node_pt next_ptr;
     VOLATILE setkey_t next_key;
-} next_foresight_t __attribute__((aligned(16))); // must be aligned to support wide CAS
+} next_foresight_t; // must be aligned to support wide CAS and 128-bit loads/stores
 
 struct node_st
 {
@@ -198,33 +198,21 @@ static sh_node_pt weak_search_predecessors(
     int        i;
 
     x = &l->head;
-    for ( i = NUM_LEVELS - 1; i >= 1; i-- ) // do not use Foresight in level 0
+    for ( i = NUM_LEVELS - 1; i >= 0; i-- )
     {
         for ( ; ; )
         {
 
-            READ_FIELD(x_next_k, x->next[i].next_key); 
-            READ_FIELD(x_next, x->next[i].next_ptr);  
+            read_16_bytes_atomic(&(x->next[i]), (uint64_t *) &x_next, (uint64_t *) &x_next_k);
             x_next = get_unmarked_ref(x_next);
 
             if ( x_next_k >= k ) break;
-            if ( x_next->k >= k ) break; // avoid reckless advancement through optimistic validation
 
             x = x_next;
         }
 
         if ( pa ) pa[i] = x;
         if ( na ) na[i] = x_next;
-    }
-    // level 0 traversal
-    for ( ; ; )
-    {
-        READ_FIELD(x_next, x->next[0].next_ptr);
-        x_next = get_unmarked_ref(x_next);
-        READ_FIELD(x_next_k, x_next->k);
-        if ( x_next_k >= k ) break;
-
-        x = x_next;
     }
 
     if ( pa ) pa[0] = x;
@@ -432,7 +420,7 @@ int set_update(set_t *l, setkey_t k, setval_t v, int overwrite)
         }
 
         /* Ensure we have unique key values at every level. */
-        if ( succ->k <= k ) goto new_world_view; // <= handles premature descent as well, as opposed to original ==
+        if ( succ->k == k ) goto new_world_view;
         assert((pred->k < k) && (succ->k > k));
 
         /* Replumb predecessor's forward pointer. */
@@ -504,15 +492,6 @@ int set_remove(set_t *l, setkey_t k)
      */
     for ( i = level - 1; i >= 0; i-- )
     {
-        READ_FIELD(helper_ptr, preds[i]->next[i].next_ptr);
-        helper_ptr = get_unmarked_ref(helper_ptr);
-        if (helper_ptr->k < k) // first, rule out premature descent
-        {
-            MB(); /* make sure we see node at all levels. */
-            do_full_delete(ptst, l, x, i);
-            goto out;
-        }
-
         READ_FIELD(helper_ptr, x->next[i].next_ptr);
         helper_ptr = get_unmarked_ref(helper_ptr);
         if (!WIDE_CAS(&preds[i]->next[i],           // then, try to swing pointer
