@@ -78,7 +78,7 @@ typedef pthread_spinlock_t ptlock_t;
 #  define UNLOCK(lock)			pthread_spin_unlock(lock)
 #endif
 
-typedef struct sl_next_foresight {
+typedef struct __attribute__((aligned(16))) sl_next_foresight { // must be aligned to support wide CAS and 128-bit loads/stores
 	struct sl_node* next_ptr;  // Pointer to the next node at this level
 	val_t next_key;        // Value of the next node at this level
 } next_foresight_t;

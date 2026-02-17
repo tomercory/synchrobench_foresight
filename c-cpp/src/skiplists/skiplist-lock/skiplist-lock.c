@@ -100,9 +100,8 @@ sl_node_t *sl_new_node(val_t val, sl_node_t *next, int toplevel, int transaction
 	node = sl_new_simple_node(val, toplevel, transactional, ptst);
 	
 	next_foresight_t next_entry = { .next_ptr = next, .next_key = (next != NULL ? next->val : VAL_MAX) };
-	for (i = 0; i < toplevel-1; i++)
+	for (i = 0; i < toplevel; i++)
 		node->next[i] = next_entry;
-	node->next[toplevel-1].next_ptr = next;
 	
 	return node;
 }
@@ -163,8 +162,6 @@ void set_subsystem_init(void)
 {
     int i;
 	for (i = 0; i < MAX_SIZES ; i++) {
-		// we do not use foresight for lvl 0 - can save space by not keeping next_key for that level
-		// for lvl x != 0 the next_key relevant for that level is stored at next[x-1].next_key
-		gc_id[i] = gc_add_allocator(sizeof(sl_node_t)+ i*sizeof(next_foresight_t) - sizeof(val_t)); 
+		gc_id[i] = gc_add_allocator(sizeof(sl_node_t)+ i*sizeof(next_foresight_t)); 
 	}
 }

@@ -30,57 +30,40 @@
 
 extern unsigned int levelmax;
 
-/*
- * "A node found not in its top level was either not yet fully linked, or marked and partially unlinked,
- * at some point when the thread traversed the list at that level.
- * We could have continued with the remove operation, but the subsequent validation would fail."
- * - A Simple Optimistic Skiplist Algorithm
- * With Foresight, we no longer require nodes to be found on their top level since they may also be
- * found at a lower level due to Premature Descent so this optimization will no longer be correct.
- */
-inline int ok_to_delete(sl_node_t *node) {
-  return (node->fullylinked && !node->marked);
+inline int ok_to_delete(sl_node_t *node, int found) {
+  return (node->fullylinked && ((node->toplevel-1) == found) && !node->marked);
 }
 
 /*
  * Function optimistic_search corresponds to the findNode method of the 
  * original paper. A fast parameter has been added to speed-up the search 
  * so that the function quits as soon as the searched element is found.
- * As part of Foresight integration, nodes will always be considered to be found at lvl 0.
  */
 inline val_t optimistic_search(sl_intset_t *set, val_t val, sl_node_t **preds, sl_node_t **succs, int fast) {
-  int i;
+  int found, i;
   sl_node_t *pred, *curr;
   val_t curr_key;
 	
+  found = -1;
   pred = set->head;
 	
-  for (i = (pred->toplevel - 1); i >= 1; i--) { // Foresight is not used in level 0
-    curr_key = pred->next[i-1].next_key;
-    curr = pred->next[i].next_ptr;
+  for (i = (pred->toplevel - 1); i >= 0; i--) { // Foresight is not used in level 0
+    read_16_bytes_atomic(&(pred->next[i]), (uint64_t *) &curr, (uint64_t *) &curr_key);
     while (val > curr_key) {
       if (curr->val >= val) {
         break;
       }
       pred = curr;
-      curr_key = pred->next[i-1].next_key;
-      curr = pred->next[i].next_ptr;
+      read_16_bytes_atomic(&(pred->next[i]), (uint64_t *) &curr, (uint64_t *) &curr_key);
     }
     if (preds != NULL) 
       preds[i] = pred;
     succs[i] = curr;
+    if (found == -1 && val == curr->val) {
+      found = i;
+    }
   }
-  // lvl 0 traversal without Foresight
-  curr = pred->next[0].next_ptr;
-  while (val > curr->val) {
-    pred = curr;
-    curr = pred->next[0].next_ptr;
-  }
-  if (preds != NULL) 
-    preds[0] = pred;
-  succs[0] = curr;
-
-  return val == curr->val ? 0 : -1;
+  return found;
 }
 
 /*
@@ -156,8 +139,7 @@ int optimistic_insert(sl_intset_t *set, val_t val) {
       }	
 			
       valid = (!pred->marked && !succ->marked && 
-	       ((volatile sl_node_t*) pred->next[i].next_ptr ==	(volatile sl_node_t*) succ) &&
-         succ->val >= val); // retry in case of Premature Descent
+	       ((volatile sl_node_t*) pred->next[i].next_ptr ==	(volatile sl_node_t*) succ));
     }	
     if (!valid) {
       /* Unlock the predecessors before leaving */ 
@@ -174,14 +156,9 @@ int optimistic_insert(sl_intset_t *set, val_t val) {
     ptst_t *ptst = ptst_critical_enter();
     new_node = sl_new_simple_node(val, toplevel, 2, ptst);
     ptst_critical_exit(ptst);
-    new_node->next[0].next_ptr = succs[0];
-    preds[0]->next[0].next_ptr = new_node;
-    for (i = 1; i < toplevel; i++) {  // note that lvl 0 does not use foresight, thus it's next_key field will be used by lvl 1 if it exists
-      new_node->next[i].next_ptr = succs[i];
-      new_node->next[i-1].next_key = succs[i]->val;
-
-      preds[i]->next[i].next_ptr = new_node;
-      preds[i]->next[i-1].next_key = val;
+    for (i = 0; i < toplevel; i++) {
+      write_16_bytes_atomic((uint64_t) succs[i], (uint64_t) succs[i]->val, &(new_node->next[i]));
+      write_16_bytes_atomic((uint64_t) new_node, (uint64_t) val, &(preds[i]->next[i]));
     }
 		
     new_node->fullylinked = 1;
@@ -213,7 +190,7 @@ int optimistic_delete(sl_intset_t *set, val_t val) {
   while(1) {
     found = optimistic_search(set, val, preds, succs, 1);
     /* If not marked and ok to delete, then mark it */
-    if (is_marked || (found != -1 && ok_to_delete(succs[found]))) {	
+    if (is_marked || (found != -1 && ok_to_delete(succs[found], found))) {	
       if (!is_marked) {
 	node_todel = succs[found];
 				
@@ -243,8 +220,7 @@ int optimistic_delete(sl_intset_t *set, val_t val) {
 	  highest_locked = i;
 	  prev_pred = pred;
 	}
-	valid = (!pred->marked && ((volatile sl_node_t*) pred->next[i].next_ptr == (volatile sl_node_t*)succ) 
-          && succ->val >= val); // retry in case of Premature Descent
+	valid = (!pred->marked && ((volatile sl_node_t*) pred->next[i].next_ptr == (volatile sl_node_t*)succ));
       }
       if (!valid) {	
 	unlock_levels(preds, highest_locked, 21);
@@ -257,11 +233,9 @@ int optimistic_delete(sl_intset_t *set, val_t val) {
 	continue;
       }
 			
-      for (i = (toplevel-1); i >= 1; i--) {
-        preds[i]->next[i].next_ptr = node_todel->next[i].next_ptr;
-        preds[i]->next[i-1].next_key = node_todel->next[i-1].next_key;
+      for (i = (toplevel-1); i >= 0; i--) {
+        write_16_bytes_atomic((uint64_t) node_todel->next[i].next_ptr, (uint64_t) node_todel->next[i].next_key, &(preds[i]->next[i]));
       }
-	    preds[0]->next[0].next_ptr = node_todel->next[0].next_ptr; // note that lvl 0 does not use foresight, thus it's next_key field will be used by lvl 1 if it exists
       UNLOCK(&node_todel->lock);	
       unlock_levels(preds, highest_locked, 22);
       ptst_t *ptst = ptst_critical_enter();
