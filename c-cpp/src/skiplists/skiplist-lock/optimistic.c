@@ -47,12 +47,9 @@ inline val_t optimistic_search(sl_intset_t *set, val_t val, sl_node_t **preds, s
   found = -1;
   pred = set->head;
 	
-  for (i = (pred->toplevel - 1); i >= 0; i--) { // Foresight is not used in level 0
+  for (i = (pred->toplevel - 1); i >= 0; i--) { 
     read_16_bytes_atomic(&(pred->next[i]), (uint64_t *) &curr, (uint64_t *) &curr_key);
     while (val > curr_key) {
-      if (curr->val >= val) {
-        break;
-      }
       pred = curr;
       read_16_bytes_atomic(&(pred->next[i]), (uint64_t *) &curr, (uint64_t *) &curr_key);
     }
