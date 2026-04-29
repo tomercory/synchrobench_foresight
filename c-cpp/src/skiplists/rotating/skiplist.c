@@ -41,6 +41,7 @@ to implement this way.
 
 static int gc_id[NUM_SIZES];
 static int curr_id;
+unsigned long sl_zero;
 
 /* - Public skiplist interface - */
 

@@ -19,7 +19,7 @@
 #define NODE_SIZE 0
 
 #define IDX(_i, _z) ((_z) + (_i)) % MAX_LEVELS
-unsigned long sl_zero;
+extern unsigned long sl_zero;
 
 /* bottom-level nodes */
 typedef VOLATILE struct sl_node node_t;
