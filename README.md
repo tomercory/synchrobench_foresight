@@ -1,3 +1,34 @@
+This clone of Synchrobench contains the artifacts for the microbenchmarks used in the paper: _Foresight: Cache-Friendly Skiplists for In-Memory Indexes_. For the artifacts of the macrobenchmarks, see: <https://github.com/tomercory/DBx1000_foresight>
+
+Foresight is a locality-enhancing optimization for skiplist-based in-memory indexes. It augments skiplist nodes with foreseen keys to reduce pointer-chasing and cache misses, and is accompanied by two integration techniques for concurrent skiplists (a portable Optimistic Validation method and a SIMD-based method) that preserve correctness without weakening the progress guarantees of the underlying skiplist designs.
+
+Besides fixing some compilation errors and adding convenient scripts for running experiments and visualizing results, the main addition of this clone is integration of the Foresight optimization into the sequential skiplist and into the concurrent Optimistic, Fraser's, and No Hot Spot skiplists. Implementations using Optimistic Validation appear in the `foresight` branch, and (non-portable) implementations using atomic 16-byte SIMD loads/stores for synchronization appear in the `foresight_SIMD` branch. The baseline implementations appear in the `master` branch.
+
+In addition, optional cache event monitoring is included for the aforementioned skiplists. It can be activated using the flag `-m 1`.
+This clone also includes several fixes to all versions (the base version and the ones with Foresight) of the Optimistic skiplist to streamline its node structure with that of the other skiplists, avoid double dereferencing, and save space.
+
+**To reproduce the paper's microbenchmarks:**
+1. Navigate to the `scripts` directory:
+```bash
+cd c-cpp/scripts
+```
+2. From each branch (`master`-  using skiplists without Foresight, `foresight`-  using skiplists with Foresight integrated via Optimistic Validation, `foresight_SIMD`-  using skiplists with Foresight integrated via SIMD), build and run the microbenchmarks:
+```bash
+./run_microbenchmarks.sh
+```
+3. Parse results and create tables:
+```bash
+./parse_results.sh
+```
+4. Generate graphs:
+```bash
+./generate_graphs.sh
+```
+
+On a modern multi-core Intel machine, the results should qualitatively match those reported in the paper. Before running, adapt the `run_microbenchmarks.sh` script to use the number of logical hardware threads on the target machine. For best reproducibility, the benchmarks should be the only substantial application running in user space during the experiments. Note that (unrelated to Foresight) Synchrobench is quite slow, especially when testing data structures with a very large initial size, so step (2) may take several days to complete.
+
+**Below are the original README contents for Synchrobench**
+
 Synchrobench
 ============
 Synchrobench is a micro-benchmark suite used to evaluate synchronization 
