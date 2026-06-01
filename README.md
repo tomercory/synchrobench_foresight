@@ -7,6 +7,8 @@ Besides fixing some compilation errors and adding convenient scripts for running
 In addition, optional cache event monitoring is included for the aforementioned skiplists. It can be activated using the flag `-m 1`.
 This clone also includes several fixes to all versions (the base version and the ones with Foresight) of the Optimistic skiplist to streamline its node structure with that of the other skiplists, avoid double dereferencing, and save space.
 
+Supplementary material to the paper is present in `foresight_supplementary_material.pdf`.
+
 **To reproduce the paper's microbenchmarks:**
 1. Navigate to the `scripts` directory:
 ```bash
