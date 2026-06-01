@@ -1,10 +1,10 @@
 #!/bin/bash
  
 # Define microbenchmark parameters (FTVS: fixed thread count, varying sizes. FSVT: fixed size, varying thread counts)
-FTVS_threads="4 64 128"
+FTVS_threads="128"
 FTVS_sizes="128 512 2048 8192 32768 131072 524288 2097152 8388608 33554432"
-FSVT_sizes="512 131072 33554432"
-FSVT_threads="1 2 8 16 32" # 4, 64, 128 threads already run as part of FTVS
+FSVT_sizes="33554432"
+FSVT_threads="1 2 4 8 16 32 64" # 128 threads already run as part of FTVS
 
 iterations="1 2 3 4 5"
 
@@ -82,7 +82,7 @@ cd scripts
       echo "" >> "$output_file6"
     done
   done
-  echo "Sequential base case finished successfuly!" | mail -s "Skiplist Experiment Update" tomer.cory@campus.technion.ac.il
+  echo "Sequential base case finished successfuly!"
 
 ### Optimistic ###
   # Define the output files and clear them if they already exists
@@ -212,7 +212,7 @@ cd scripts
     done
   done
   done
-  echo "Optimistic base case finished successfuly!" | mail -s "Skiplist Experiment Update" tomer.cory@campus.technion.ac.il
+  echo "Optimistic base case finished successfuly!"
 
 ### Fraser ###
 # Define the output files and clear them if they already exists
@@ -342,7 +342,7 @@ cd scripts
     done
   done
   done
-  echo "Fraser base case finished successfuly!" | mail -s "Skiplist Experiment Update" tomer.cory@campus.technion.ac.il
+  echo "Fraser base case finished successfuly!"
 
 ### NHS ###
 # Define the output files and clear them if they already exists
@@ -472,4 +472,4 @@ cd scripts
     done
   done
   done
-  echo "NHS base case finished successfuly! (base experiment is over)" | mail -s "Skiplist Experiment Update" tomer.cory@campus.technion.ac.il
+  echo "NHS base case finished successfuly! (base experiment is over)"
